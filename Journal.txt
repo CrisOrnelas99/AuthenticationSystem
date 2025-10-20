@@ -19,3 +19,17 @@ step 2 - create server.js file, import stuff, app.use and listen to port
 
 Step 3 - create mongodb database, store address and password to .env file MONGODB_URI=""
        - Create config directory under backend, create mongodb.js
+
+step 4 - create .gitignore file
+       node_modules
+       .env
+
+Step 5 - Create Github Repository
+       - Create new repository in github
+       - go to root app folder -> git init
+       - -> git remote add origin <repository>
+       - -> git add .
+       - -> git commit -m "message"
+       - if first time -> git push -u origin main
+            else -> git push -u origin master
+       - -> git push
