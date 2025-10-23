@@ -1,4 +1,6 @@
 Mern Authentication System
+    - Complete MERN Authentication System with
+        Password reset, email verification, JWT authentication and Email verification
 
 Step 1 - install packages into backend
     At backend File -> terminal -> npm init
@@ -24,8 +26,8 @@ step 4 - create .gitignore file
        node_modules
        .env
 
-Step 5 - Create Github Repository
-       - Create new repository in github
+Step 5 - Create GitHub Repository
+       - Create new repository in gitHub
        - go to root app folder -> git init
        - -> git remote add origin <repository>
        - -> git add .
@@ -33,3 +35,12 @@ Step 5 - Create Github Repository
        - if first time -> git push -u origin main
             else -> git push -u origin master
        - -> git push
+            ISSUES - if accidentally add .gitignorefile
+                    if single file -> git rm --cached <file location>
+                    if multiple file -> git rm -r --cached <file location>
+
+
+step 6: create database schema
+        - create models directory in backend
+            - create userModels.js file
+            - import mongoose, create schema, export schema
