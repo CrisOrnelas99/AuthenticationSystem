@@ -44,3 +44,6 @@ step 6: create database schema
         - create models directory in backend
             - create userModels.js file
             - import mongoose, create schema, export schema
+
+step 7: create controllers directory under backend
+            - create authController.js file
