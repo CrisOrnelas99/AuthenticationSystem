@@ -12,7 +12,7 @@ Step 1 - install packages into backend
         -- nodemon - restarts backend whenever code changes in file
         -- jsonwebtoken - creates the token for authentication
         -- mongoose - connects with the mongo database
-        -- bycryptjs - encrypts the password and save in database
+        -- bcryptjs - encrypts the password and save in database
         -- nodemailer - send the emails
         -- cookie-parser - sends cookies in the API response
     add "type": "module" after "main" and "server": "nodemon server.js" in package.json to import and export
@@ -47,3 +47,12 @@ step 6: create database schema
 
 step 7: create controllers directory under backend
             - create authController.js file
+            - import bcrypt jwt mongoschema
+            - register user function
+            - login function
+            - logout function
+
+ Step 8: create routes directory in backend
+            - create authRoutes.js file
+            -
+1:05:00

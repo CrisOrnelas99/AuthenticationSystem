@@ -1,3 +1,4 @@
+
 import bcrypt from "bcryptjs"; // used to hash and compare hashed passwords
 import jwt from "jsonwebtoken"; // creates tokens that represent logged in users, stored in cookies or local storage
 import userModel from "../models/userModels.js"; // mongoose model for users
@@ -54,7 +55,7 @@ export const login = async(req, res)=>{
 
         if (!user){
             return res.json({success: false, message: "Invalid Email!"})
-        };
+        }
             // compare passwords
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch){
@@ -80,6 +81,7 @@ export const login = async(req, res)=>{
 }
     //log out user
 export const logout = async(req, res)=>{
+
     try{
             //deletes the authentication cookie, logging the user out
         res.clearCookie("token", {
