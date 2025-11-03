@@ -54,18 +54,23 @@ step 7: create controllers directory under backend
 
  Step 8: create routes directory in backend
             - create authRoutes.js file
-            -    pull controller files
+            - pull controller files
             - test endpoints with postman
             - check mongdb for data in collections
 
 Step 9: Create nodemailer.js File inside config
             - import, create transporter
             - export transporter
-            - log in to brevo - smtp & API -> generate a new SMTP Key
+            - log in to brevo (use non gmail account)- smtp & API -> generate a new SMTP Key
             - store user, password and email into .env
             - update authController with sending email
-            -test in postman, check database
+            - test in postman, check database and brevo, check database
 
+step 10: update routes/authRoutes.js
+            - create function to send verification OTP to email
+            - create function to verify the email using OTP
+            - create middleware directory in backend
+            - create userAuth.js within middleware
+            - update routes. add /sendOTP and /verifyAccount with middleware and required functions
+            -test in postman, check db and brevo, register-> verify token there in /sendOTP, then /verifyAccount
 
-
-            verify works, redo test postman - email not sent?

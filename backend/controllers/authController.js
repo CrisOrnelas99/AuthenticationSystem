@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs"; // used to hash and compare hashed passwords
 import jwt from "jsonwebtoken"; // creates tokens that represent logged in users, stored in cookies or local storage
 import userModel from "../models/userModels.js"; // mongoose model for users
 import transporter from "../config/nodemailer.js";
+
     //signup new users
 export const register = async (req, res)=> {
         //extracts data sent by the client from the request body
@@ -53,6 +54,7 @@ export const register = async (req, res)=> {
         res.json({success: false, message: error.message});
     }
 }
+
     //login existing users
 export const login = async(req, res)=>{
         //get input and validate
@@ -91,6 +93,7 @@ export const login = async(req, res)=>{
 
     }
 }
+
     //log out user
 export const logout = async(req, res)=>{
 
@@ -107,5 +110,73 @@ export const logout = async(req, res)=>{
     }
     catch(error){
         return res.json({success: false, message: error.message});
+    }
+}
+
+//send verification OTP to the user's email
+export const sendVerifyOtp = async (req, res) => {
+    try {
+        const {userId} = req.body;
+        //fetch user from database
+        const user = await userModel.findById(userId);
+        //block if already verified
+        if (user.isAccountVerified){
+            return res.json({success: false, message: "Account Already verified"});
+        }
+        //create 6 digit OTP
+        const otp = String(Math.floor(100000 + Math.random() * 900000));
+        user.verifyOtp = otp;
+        //expire in 24 hours
+        user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
+
+        await user.save();
+
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: user.email,
+            subject: "Account Verification OTP",
+            text: `Your OTP is ${otp}. Verify your account using this OTP`
+        }
+        //send email
+        await transporter.sendMail(mailOptions);
+        res.json({ success: true, message: "Verification OTP sent on Email" });
+    }
+    catch(error){
+        res.json({ success: false, message: error.message });
+    }
+}
+
+//get OTP and verify user account
+export const verifyEmail = async (req, res) => {
+    const {userId, otp} = req.body;
+    //fail if no user Id or OTP in req message
+    if (!userId || !otp) {
+        return res.json({success: false, message: "Missing Details"});
+    }
+    try{
+        //fetch ID from database
+        const user = await userModel.findById(userId);
+
+        if (!user){
+            return res.json({success: false, message: "User not found"});
+        }
+        //OTP must exist
+        if(user.verifyOtp === "" || user.verifyOtp !== otp){
+            return res.json({success: false, message: "Invalid OTP"});
+        }
+        //check expiration
+        if (user.verifyOtpExpireAt < Date.now()){
+            return res.json({success: false, message: "OTP Expired"});
+        }
+        //verify and invalidate OTP
+        user.isAccountVerified = true;
+        user.verifyOtp = "";
+        user.verifyOtpExpireAt = "0";
+
+        await user.save();
+        return res.json({success: true, message: "Email verified successfully"});
+    }
+    catch(error){
+        return res.json({success: false, message: "Verify Email Failed"});
     }
 }
