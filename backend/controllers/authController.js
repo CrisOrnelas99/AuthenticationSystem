@@ -2,6 +2,7 @@
 import bcrypt from "bcryptjs"; // used to hash and compare hashed passwords
 import jwt from "jsonwebtoken"; // creates tokens that represent logged in users, stored in cookies or local storage
 import userModel from "../models/userModels.js"; // mongoose model for users
+import transporter from "../config/nodemailer.js";
     //signup new users
 export const register = async (req, res)=> {
         //extracts data sent by the client from the request body
@@ -34,6 +35,17 @@ export const register = async (req, res)=> {
                 ? "none" : "strict",
             maxAge: 7*24*60*60*1000 //how long the cookie lasts
         });
+        //send welcome email
+        const mailOptions ={
+            from: process.env.SENDER_EMAIL,
+            to: email,
+            subject: "Welcome to TEST",
+            text: `Welcome to TEST website. Your account
+                    has been created with email id: ${email}`
+        }
+        //sends email using transporter
+        await transporter.sendMail(mailOptions);
+
             //tells the frontend that the registration worked
         return res.json({success: true});
     }
