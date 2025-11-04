@@ -79,3 +79,8 @@ step 11: create isAuthenticated function into authControllers and post endpoint 
             -create resetPassword function in authControllers and pass into authRoutes
             -test in postman, check in database and brevo
 
+Step 12:    -create userRoutes.js in routes, userContollers in controllers
+            -in userController create getUserData function
+            -in userRoutes, get /data using userAuth and getUserData
+            -update server.js for /api/user, userRouter
+
