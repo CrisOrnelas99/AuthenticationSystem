@@ -74,3 +74,8 @@ step 10: update routes/authRoutes.js
             - update routes. add /sendOTP and /verifyAccount with middleware and required functions
             -test in postman, check db and brevo, register-> verify token there in /sendOTP, then /verifyAccount
 
+step 11: create isAuthenticated function into authControllers and post endpoint into authRoutes
+            -create sendResetOtp function in authControllers and pass into authRoutes
+            -create resetPassword function in authControllers and pass into authRoutes
+            -test in postman, check in database and brevo
+
