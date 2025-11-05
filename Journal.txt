@@ -86,7 +86,12 @@ Step 12:    -create userRoutes.js in routes, userContollers in controllers
 
 step 13:
             -create frontend directory
-            -open terminal -> npm create vite@latest -> <project name>, react, javascript
+            -open terminal -> npm create vite@latest -> . , react, javascript
+            - in frontEnd -> npm install axios react-router-dom react-toastify
+            -push changes to github
+
+
+
 
 
 
