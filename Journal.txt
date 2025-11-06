@@ -119,6 +119,47 @@ step 14:
             - place test text in app.jsx to test
             - npm run start and check if running
 
+step 15:
+            - create pages, assets, components and context folders under src
+            - in pages, create home.jsx, login.jsx, resetPass.jsx, verifyEmail.jsx
+            - import react to those jsx files and create page function
+            - update main.jsx
+                    import { StrictMode } from 'react'
+                    import { createRoot } from 'react-dom/client'
+                    import './index.css'
+                    import App from './App.jsx'
+                    import {BrowserRouter} from "react-router-dom";
+
+
+                    createRoot(document.getElementById('root')).render(
+                      <BrowserRouter>
+                        <App />
+                      </BrowserRouter>,
+                    )
+            - update app.jsx, import pages, create new routes
+                          import React from "react";
+                          import {Routes, Route} from "react-router-dom";
+                          import Home from "./pages/home.jsx";
+                          import VerifyEmail from "./pages/verifyEmail.jsx";
+                          import Login from "./pages/login.jsx";
+                          import ResetPass from "./pages/resetPass.jsx";
+
+                          const App = () => {
+                              return (
+                                  <div >
+                                      <Routes>
+                                          <Route path='/' element={<Home/>}/>
+                                          <Route path='/login' element={<Login/>}/>
+                                          <Route path='/email-verify' element={<VerifyEmail/>}/>
+                                          <Route path='/reset-password' element={<ResetPass/>}/>
+                                      </Routes>
+                                  </div>
+                              )
+                          }
+                          export default App;
+
+
+
 
 
 
