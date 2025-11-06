@@ -87,8 +87,42 @@ Step 12:    -create userRoutes.js in routes, userContollers in controllers
 step 13:
             -create frontend directory
             -open terminal -> npm create vite@latest -> . , react, javascript
-            - in frontEnd -> npm install axios react-router-dom react-toastify
+            -in frontEnd -> npm install axios react-router-dom react-toastify
+            -test with npm run dev
+            -delete app.css and clear app.jsx then import react into app.jsx, clear index.css
             -push changes to github
+
+step 14:
+
+            - add assets into assets in src
+            - copy bg_img.png and favicon.svg into public, remove favicon.svg
+            - update svg in index.html
+            - google fonts, find font to use, import font into index.css, insert whats needed there
+            -  npm install tailwind using site
+            - into index.css
+                      @import "tailwindcss";
+
+                      @tailwind base;
+                      @tailwind components;
+                      @tailwind utilities;
+            - into vite.config.js
+                       import { defineConfig } from 'vite'
+                       import react from '@vitejs/plugin-react'
+                       import tailwindcss from '@tailwindcss/vite'
+
+                       export default defineConfig({
+                           plugins: [
+                               react(),
+                               tailwindcss(),
+                           ],
+                       })
+            - place test text in app.jsx to test
+            - npm run start and check if running
+
+
+
+
+
 
 
 
