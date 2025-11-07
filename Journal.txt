@@ -158,6 +158,9 @@ step 15:
                           }
                           export default App;
 
+step 16:
+            - create navbar.jsx, header.jsx and store into home.jsx
+            - test home page
 
 
 
