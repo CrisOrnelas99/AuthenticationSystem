@@ -161,6 +161,8 @@ step 15:
 step 16:
             - create navbar.jsx, header.jsx and store into home.jsx
             - test home page
+            - update navBar.jsx, further update login.jsx, create appContext.jsx and make it
+            -test login page
 
 
 
