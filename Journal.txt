@@ -163,6 +163,8 @@ step 16:
             - test home page
             - update navBar.jsx, further update login.jsx, create appContext.jsx and make it
             -test login page
+            -4:18:53 OTP button, and enter code
+            - test OTP email verification
 
 
 
