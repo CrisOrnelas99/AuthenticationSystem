@@ -175,13 +175,17 @@ step 16:
 Step 17 (2025-11-23):
     - Diagnosed frontend verify flow: page route /email-verify exists; current verifyEmail.jsx has import/handler bugs, provided fixed version for correct OTP submission and redirect after success.
     - Validated backend verify flow with Postman/DB: /send-verify-otp sets verifyOtp, /verify-account checks OTP + expiry, /user/data shows isAccountVerified.
-    - Email sending blocked by Brevo: sender soldierDOH99@gmail.com rejected as unvalidated.
+    - Email sending blocked by Brevo: sender <email> rejected as unvalidated.
 
 Next steps (email):
     - In Brevo: add/validate a sender you own (e.g., school email) or authenticate a domain; then set SENDER_EMAIL to that validated address and restart backend.
     - If you just need dev testing, switch SMTP to Mailtrap free inbox and view emails there; revert to Brevo after validation.
 
 
+
+Step 18 (2025-11-24):
+    - Frontend reset password page: fixed OTP submission to advance to the new password screen (sequential views only), added OTP capture handler, and separated onSubmitNewPassword to call /api/auth/reset-password with { email, otp, newPass }.
+    - Added toast messaging and submit-state guard for the final reset; corrected button type on OTP form to ensure handler fires.
 
 
 
