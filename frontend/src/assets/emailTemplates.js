@@ -75,7 +75,7 @@ export const EMAIL_VERIFY_TEMPLATE = `
                       </tr>
                       <tr>
                         <td style="padding: 0 0 10px; font-size: 14px; line-height: 150%;">
-                          You are just one step away to verify your account for this email: <span style="color: #4C83EE;">{{email}}</span>.
+                          You are just one step away to verify your account for this email: <span style="color: #4C83EE;">"{{email}}"</span>.
                         </td>
                       </tr>
                       <tr>
@@ -186,7 +186,7 @@ export const PASSWORD_RESET_TEMPLATE = `
                       </tr>
                       <tr>
                         <td style="padding: 0 0 10px; font-size: 14px; line-height: 150%;">
-                          We received a password reset request for your account: <span style="color: #4C83EE;">{{email}}</span>.
+                          We received a password reset request for your account: <span style="color: #4C83EE;">"{{email}}"</span>.
                         </td>
                       </tr>
                       <tr>
