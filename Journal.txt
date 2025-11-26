@@ -167,26 +167,21 @@ step 16:
             - test OTP email verification
 
 
-
-
-
-
-
 Step 17 (2025-11-23):
     - Diagnosed frontend verify flow: page route /email-verify exists; current verifyEmail.jsx has import/handler bugs, provided fixed version for correct OTP submission and redirect after success.
     - Validated backend verify flow with Postman/DB: /send-verify-otp sets verifyOtp, /verify-account checks OTP + expiry, /user/data shows isAccountVerified.
     - Email sending blocked by Brevo: sender <email> rejected as unvalidated.
-
-Next steps (email):
-    - In Brevo: add/validate a sender you own (e.g., school email) or authenticate a domain; then set SENDER_EMAIL to that validated address and restart backend.
-    - If you just need dev testing, switch SMTP to Mailtrap free inbox and view emails there; revert to Brevo after validation.
-
 
 
 Step 18 (2025-11-24):
     - Frontend reset password page: fixed OTP submission to advance to the new password screen (sequential views only), added OTP capture handler, and separated onSubmitNewPassword to call /api/auth/reset-password with { email, otp, newPass }.
     - Added toast messaging and submit-state guard for the final reset; corrected button type on OTP form to ensure handler fires.
 
+Step 19 (2025-11-26):
+    - Switched mail transport to Gmail SMTP via env (SMTP_HOST/PORT/USER/PASS/SENDER_EMAIL); nodemailer reads those and sets secure by port (465 SSL or 587 STARTTLS). Brevo creds kept separate for fallback.
+    - Navbar “Verify Email” sends OTP and routes to /email-verify; added “Reset Password” shortcut that pre-fills and locks the signed-in user email when provided.
+    - Password reset flow now redirects to Login after success; reset email template fills OTP and user email correctly; reset endpoints block changing another user’s password when logged in.
 
-
-
+Next steps (email):
+    - In Brevo: add/validate a sender you own  or authenticate a domain; then set SENDER_EMAIL to that validated address and restart backend.
+    - If you just need dev testing, switch SMTP to Mailtrap free inbox and view emails there; revert to Brevo after validation.

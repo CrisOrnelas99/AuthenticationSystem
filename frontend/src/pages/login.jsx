@@ -1,6 +1,6 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { assets } from "../assets/assets";
-import {useNavigate} from "react-router-dom"
+import {useLocation, useNavigate} from "react-router-dom"
 import {AppContext} from "../context/appContext.jsx";
 import axios from "axios";
 import {toast} from "react-toastify";
@@ -8,13 +8,23 @@ import {toast} from "react-toastify";
 const Login = () => {
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const {backendUrl, setIsLoggedin, getUserData} = useContext(AppContext)
 
-    const [state, setState] = useState("Sign Up");
+    const [state, setState] = useState("Login");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    useEffect(() => {
+        const mode = location.state?.mode;
+        if (mode === "signup") {
+            setState("Sign Up");
+        } else if (mode === "login") {
+            setState("Login");
+        }
+    }, [location.state]);
 
     const onSubmitHandler = async(e)=>{
         e.preventDefault();

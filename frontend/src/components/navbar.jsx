@@ -10,23 +10,26 @@ const Navbar = () => {
     const navigate = useNavigate();
     const {userData, backendUrl, setUserData, setIsLoggedin} = useContext(AppContext)
 
-    const sendVerificationOtp = async()=>{
-        try{
+    const sendVerificationOtp = async () => {
+        try {
             axios.defaults.withCredentials = true;
-            const {data} = await axios.post(backendUrl+"/api/auth/send-verify-otp");
-            if (data.access){
+            const { data } = await axios.post(`${backendUrl}/api/auth/send-verify-otp`);
+            if (data.success) {
+                toast.success(data.message || "Verification OTP sent");
                 navigate("/email-verify");
-                toast.success(data.message);
+            } else {
+                toast.error(data.message || "Could not send verification email");
             }
-            else{
-                toast.error(data.message);
-            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || error.message);
         }
-        catch(error){
-            toast.error(error.message);
-        }
+    };
 
-    }
+    const goToResetPassword = () => {
+        navigate("/reset-password", {
+            state: { presetEmail: userData?.email, lockEmail: true },
+        });
+    };
 
     const logout = async ()=> {
         try{
@@ -57,6 +60,11 @@ const Navbar = () => {
                             {!userData.isAccountVerified &&
                             <li onClick={sendVerificationOtp} className="py-1 px-2 hover:bg-gray-200 cursor-pointer">
                                 Verify Email
+                            </li>
+                            }
+                            {userData.isAccountVerified &&
+                            <li onClick={goToResetPassword} className="py-1 px-2 hover:bg-gray-200 cursor-pointer">
+                                Reset Password
                             </li>
                             }
                             <li onClick={logout} className="py-1 px-2 hover:bg-gray-200 cursor-pointer pr-10">

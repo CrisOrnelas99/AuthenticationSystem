@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import { assets } from "../assets/assets.js";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/appContext.jsx";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -8,12 +8,16 @@ import { toast } from "react-toastify";
 
 const ResetPassword = () => {
 
+  const location = useLocation();
   const { backendUrl } = useContext(AppContext);
   axios.defaults.withCredentials = true;
 
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const presetEmail = location.state?.presetEmail || "";
+  const emailLocked = Boolean(location.state?.lockEmail && presetEmail);
+
+  const [email, setEmail] = useState(presetEmail);
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [isEmailSent, setIsEmailSent] = useState(false);
@@ -69,7 +73,9 @@ const ResetPassword = () => {
         const {data} = await axios.post(backendUrl + "/api/auth/reset-password",
             {email, otp, newPass: newPassword});
         data.success ? toast.success(data.message) : toast.error(data.message);
-        data.success && navigate("/login");
+        if (data.success) {
+            navigate("/login", { replace: true, state: { mode: "login" } });
+        }
     }
         catch(error){
             toast.error(error.message);
@@ -102,6 +108,8 @@ const ResetPassword = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              readOnly={emailLocked}
+              disabled={emailLocked}
             />
           </div>
           <button className="w-full py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-900 text-white rounded-full mt-3">

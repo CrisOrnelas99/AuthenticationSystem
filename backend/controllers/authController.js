@@ -3,8 +3,8 @@ import bcrypt from "bcryptjs"; // used to hash and compare hashed passwords
 import jwt from "jsonwebtoken"; // creates tokens that represent logged in users, stored in cookies or local storage
 import userModel from "../models/userModels.js"; // mongoose model for users
 import transporter from "../config/nodemailer.js";
-
-    //signup new users
+import {EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE} from "../config/emailTemplates.js";
+//signup new users
 export const register = async (req, res)=> {
         //extracts data sent by the client from the request body
     const {name, email, password} = req.body;
@@ -68,12 +68,12 @@ export const login = async(req, res)=>{
         const user = await userModel.findOne({email});
 
         if (!user){
-            return res.json({success: false, message: "Invalid Email!"})
+            return res.json({success: false, message: "Invalid Email or Password!"})
         }
             // compare passwords
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch){
-            return res.json({success: false, message: "Invalid Password!"});
+            return res.json({success: false, message: "Invalid Email or Password!"});
         }
         //create and send token
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, { expiresIn: '7d'});
@@ -135,11 +135,12 @@ export const sendVerifyOtp = async (req, res) => {
             from: process.env.SENDER_EMAIL,
             to: user.email,
             subject: "Account Verification OTP",
-            text: `Your OTP is ${otp}. Verify your account using this OTP`
+            //text: `Your OTP is ${otp}. Verify your account using this OTP`,
+            html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
         }
         //send email
         await transporter.sendMail(mailOptions);
-        res.json({ success: true, message: "Verification OTP sent on Email" });
+        res.json({ success: true, message: "Verification OTP sent to Email" });
     }
     catch(error){
         res.json({ success: false, message: error.message });
@@ -177,7 +178,7 @@ export const verifyEmail = async (req, res) => {
         return res.json({success: true, message: "Email verified successfully"});
     }
     catch(error){
-        return res.json({success: false, message: "Verify Email Failed"});
+        return res.json({success: false, message: "Email verification Failed"});
     }
 }
 
@@ -199,9 +200,23 @@ export const sendResetOtp = async (req, res) => {
         return res.json({success: false, message: "Email is required"});
     }
     try{
+        // If a user is logged in, ensure they are resetting their own email
+        let loggedInUserId = null;
+        if (req.cookies?.token) {
+            try {
+                const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
+                loggedInUserId = decoded?.id;
+            } catch (e) {
+                // ignore token errors for unauthenticated reset flows
+            }
+        }
+
         const user = await userModel.findOne({email});
         if(!user){
             return res.json({success: false, message: "User not found"});
+        }
+        if (loggedInUserId && user._id.toString() !== loggedInUserId) {
+            return res.json({success: false, message: "Email mismatch"});
         }
         //create 6 digit OTP
         const otp = String(Math.floor(100000 + Math.random() * 900000));
@@ -214,8 +229,11 @@ export const sendResetOtp = async (req, res) => {
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: user.email,
-            subject: "Account Rest OTP",
-            text: `Your OTP is ${otp}. Use this OTP to proceed with password reset`
+            subject: "Account Reset OTP",
+            // Insert both otp and email placeholders
+            html: PASSWORD_RESET_TEMPLATE
+                .replace("{{otp}}", otp)
+                .replace("{{email}}", user.email)
         }
         //send email
         await transporter.sendMail(mailOptions);
@@ -234,9 +252,23 @@ export const resetPassword = async (req, res) => {
         return res.json({success: false, message: "Missing information"});
     }
     try{
+        // If a user is logged in, ensure they are resetting their own email
+        let loggedInUserId = null;
+        if (req.cookies?.token) {
+            try {
+                const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
+                loggedInUserId = decoded?.id;
+            } catch (e) {
+                // ignore token errors for unauthenticated reset flows
+            }
+        }
+
         const user = await userModel.findOne({email});
-        if(!email){
+        if(!user){
             return res.json({success: false, message: "User not found"});
+        }
+        if (loggedInUserId && user._id.toString() !== loggedInUserId) {
+            return res.json({success: false, message: "Email mismatch"});
         }
         if (user.resetOtp === "" || user.resetOtp !== otp){
             return res.json({success: false, message: "Invalid OTP"})
