@@ -1,11 +1,11 @@
 # Authentication System Backend
 
-Express + MongoDB API that issues JWT cookies, handles registration/login, email verification OTP, and password reset, and sends transactional emails via Nodemailer.
+Express + MongoDB API that issues JWT cookies, handles registration/login, email verification OTP, password reset, and sends transactional emails via Nodemailer.
 
 ## Prerequisites
 - Node.js and npm
 - MongoDB connection string (Atlas is fine)
-- SMTP account (configured for Brevo in config/nodemailer.js)
+- SMTP account (configure host/port/user/pass in `.env`)
 
 ## Setup
 1. cd backend
@@ -14,6 +14,8 @@ Express + MongoDB API that issues JWT cookies, handles registration/login, email
    - MONGODB_URI
    - JWT_SECRET
    - NODE_ENV (use production to enable secure cookies)
+   - SMTP_HOST (e.g., smtp.gmail.com or Brevo host)
+   - SMTP_PORT (465 for SSL, 587 for STARTTLS)
    - SMTP_USER
    - SMTP_PASS
    - SENDER_EMAIL
@@ -26,7 +28,7 @@ Express + MongoDB API that issues JWT cookies, handles registration/login, email
 ## Project structure
 - server.js: Express app, JSON/cookie parsing, CORS allowlist (http://localhost:5173), mounts routers, starts server.
 - config/mongodb.js: Mongoose connection helper.
-- config/nodemailer.js: SMTP transporter (Brevo host/port 587).
+- config/nodemailer.js: SMTP transporter (host/port/user/pass from env; secure set by port).
 - models/userModels.js: User schema with password, verification OTP, reset OTP fields.
 - middleware/userAuth.js: Reads JWT from token cookie and attaches userId.
 - controllers/: authController.js (register, login, logout, send/verify account OTP, send reset OTP, reset password, auth check); userController.js (fetch profile data).

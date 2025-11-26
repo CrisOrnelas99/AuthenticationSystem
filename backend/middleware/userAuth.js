@@ -9,9 +9,8 @@ const userAuth = async (req, res, next) => {
     try{
 
         const tokenDecode = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("Good so far 1", tokenDecode?.id);
 
-        if (!req.body) req.body = {};        // <-- ensure body exists for GETs
+        if (!req.body) req.body = {};        // ensure body exists for GETs
         req.body.userId = tokenDecode.id;    // attach for your controller
         next();
 

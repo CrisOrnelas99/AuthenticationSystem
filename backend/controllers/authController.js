@@ -213,7 +213,7 @@ export const sendResetOtp = async (req, res) => {
 
         const user = await userModel.findOne({email});
         if(!user){
-            return res.json({success: false, message: "User not found"});
+            return res.json({success: false, message: "Email mismatch"});
         }
         if (loggedInUserId && user._id.toString() !== loggedInUserId) {
             return res.json({success: false, message: "Email mismatch"});
@@ -265,7 +265,7 @@ export const resetPassword = async (req, res) => {
 
         const user = await userModel.findOne({email});
         if(!user){
-            return res.json({success: false, message: "User not found"});
+            return res.json({success: false, message: "Email mismatch"});
         }
         if (loggedInUserId && user._id.toString() !== loggedInUserId) {
             return res.json({success: false, message: "Email mismatch"});
