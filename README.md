@@ -1,9 +1,10 @@
-Authentication System
+# 🔐Authentication System
 ======================
 
+🎥 **Built by following a YouTube tutorial**
 Full-stack email/OTP authentication built with React (Vite) on the frontend and Express/MongoDB on the backend. Users can register, log in with httpOnly JWT cookies, verify email via 6-digit OTP, and reset passwords via email OTP.
 
-Features
+## ✨Features
 --------
 - Register/login with bcrypt-hashed passwords and signed JWT cookies.
 - Email verification: 6-digit OTP via SMTP (24-hour expiry).
@@ -11,17 +12,17 @@ Features
 - Auth guard middleware (`userAuth`) for protected API routes.
 - React SPA with login/signup, email verify, and reset flows plus toast notifications.
 
-Tech Stack
+## 🧰 Tech Stack
 ----------
 - Backend: Node.js, Express, MongoDB (Mongoose), JWT, Nodemailer (SMTP).
 - Frontend: React 19, Vite, React Router, React Toastify.
 
-Project Structure
+## 🗂️ Project Structure
 -----------------
 - `backend/`: Express API (`server.js`, routes/controllers, MongoDB and Nodemailer config, auth middleware, Mongoose models).
 - `frontend/`: React SPA (pages/components, auth context, Vite tooling).
 
-Setup
+## 🛠️ Setup
 -----
 1) Backend env: create `backend/.env`:
 ```
@@ -46,14 +47,14 @@ VITE_BACKEND_URL=http://localhost:4000
 - Frontend: `cd frontend && npm run dev`
 5) Visit `http://localhost:5173`. If you deploy elsewhere, update CORS allowlist in `backend/server.js`.
 
-Auth Flows (manual test)
+## 🔄 Auth Flows (manual test)
 ------------------------
 - Register: creates user, sets JWT cookie, sends welcome email.
 - Verify email: click “Verify Email” in navbar, enter 6-digit code (24h validity).
 - Login: sets JWT cookie; protected routes read it via `userAuth`.
 - Password reset: request OTP, enter OTP + new password within 10 minutes; UI redirects to Login after success.
 
-Notes
+## 📝 Notes
 -----
 - Cookies are httpOnly and respect `NODE_ENV` for secure/sameSite.
 - OTPs are single-use and cleared after successful verification/reset.
